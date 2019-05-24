@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testsdfsdf</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div class="container">
+      <fieldset>
+        <form method="post" id="weather-form">
+          <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required autocomplete="off">
+          <input type="submit" class="ghost-button" value="Get Weather">
+        </form>
+        <p id="response"></p>
+      </fieldset>
+    </div>
+  </body>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript">
+      $('#weather-form').submit(function(){
+        // console.log($(this).serialize());
+        let data = $(this).serialize();
+        // return false;
+        $.post('/',data,function(response){ $("#response").html(response.weather); });
+        return false;
+      });
+  </script>
+</html>
