@@ -16,7 +16,6 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
   let city = req.body.city;
   let url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
-	// res.send(url);
 
   request(url, function (err, response, body) {
     if(err){
@@ -24,17 +23,21 @@ app.post('/', function (req, res) {
     } else {
       let weather = JSON.parse(body)
       if(weather.main == undefined){
-        // res.render('index', {weather: null, error: 'Error, please try again'});
-        let weatherText = 'Error with weather api, please check the api key';
+        let weatherText = 'No result!!';
         res.send({weather: weatherText, error: 'Error, please try again'});
       } else {
-        let weatherText = `It's ${weather.main.temp} ℃ in ${weather.name}!`;
-    // res.send(weatherText);
-        // res.render('index', {weather: weatherText, error: null});
+
+        let lat = weather.coord.lat;
+        let lon = weather.coord.lon;
+        let city_id = weather.id;
+
+        // let weatherText = `It's ${weather.main.temp} ℃ in ${weather.name}!`;
+        let weatherText = `<div id="openweathermap-widget-1"></div>
+          <script src='//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/d3.min.js'></script><script>window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];  window.myWidgetParam.push({id: 1,cityid: ${city_id},appid: '${apiKey}',units: 'metric',containerid: 'openweathermap-widget-1',  });  (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();</script>`;
         res.send({weather: weatherText, error: 'null'});
       }
     }
   });
 })
 
-app.listen(3000);
+app.listen(8000);
